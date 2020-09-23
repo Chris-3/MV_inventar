@@ -26,7 +26,8 @@ if (isset($_POST['submit'])) {
     ?>
         <h4><?= $erg ?></h4>
         <form action="Bilder_hinzufuegen.php" method="GET">
-            <p id="button"><button type="submit" name="Instrumenten_ID" value="<?= $erg ?>">weiter zum Bilder hochladen</button></p>
+        <p id="button"><button type="submit" name="Instrumenten_ID" value="<?= $_POST['Instrumenten_ID'] ?>">weiter zum Bilder hochladen</button></p>
+
         </form>
         <p id="button"><input type="button" value="Zurück" onClick="history.go(-1);return true;"></p>
 
