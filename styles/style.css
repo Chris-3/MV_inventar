@@ -1,0 +1,113 @@
+/* body {
+    margin: 0;
+    background-color: bisque;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+} */
+
+@import "style_responsive_table2.css";
+#wrapper {
+    max-width: 600px;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    padding: 0;
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+header {
+    height: 150px;
+    background-color: #7e0909;
+    background-image: url('mvlogo_neu_whiteFont250.png');
+    background-repeat: no-repeat;
+    background-size: auto 85%;
+}
+
+footer {
+    clear: both;
+    text-align: center;
+}
+
+nav {
+    background-color: #7e0909;
+    height: 30px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+nav ul {
+    margin: 0;
+    padding: 0;
+}
+
+nav li {
+    list-style-type: none;
+    float: left;
+    margin: 5.5px 0 5.5px 15px;
+    max-width: 100%;
+}
+
+#content {
+    clear: both;
+    padding: 15px;
+    overflow-x: auto;
+}
+
+h4 {
+    clear: both;
+}
+
+form {
+    padding: 10px;
+}
+
+form p {
+    clear: both;
+}
+
+label {
+    /* min-width: 140px; */
+    display: inline-block;
+}
+
+select {
+    min-width: 100px;
+    /* margin-right: 60px; */
+}
+
+input {
+    width: 220px;
+}
+
+textarea {
+    min-width: 220px;
+}
+
+#data_input {
+    box-sizing: border-box;
+    margin: 5px 20px;
+    width: 250px;
+    float: left;
+    max-width: 100%;
+}
+
+#small_margin {
+    margin: 5px 15px;
+}
+
+#button {
+    text-align: center;
+}
+
+#radio_button {
+    max-width: 20px;
+}
