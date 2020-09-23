@@ -1,6 +1,8 @@
 <?php require("templates/header.php");
 require("templates/connectDB.php");
 require("templates/register_instr_type.php");
+require("templates/add_new_instrument.php");
+
 if (isset($_POST['submit'])) {
     echo '<div id="small_margin">';
     if (empty($_POST['new_type'])) {
