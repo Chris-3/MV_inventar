@@ -1,0 +1,3 @@
+GRANT USAGE ON *.* TO `mvhofkirchen`@`localhost` IDENTIFIED BY PASSWORD '*3812887D5E2D12C2DF687F431466825D58DF897B';
+
+GRANT ALL PRIVILEGES ON `mvhofkirchen`.* TO `mvhofkirchen`@`localhost`;
