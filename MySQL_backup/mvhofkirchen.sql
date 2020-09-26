@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 26, 2020 at 05:11 PM
+-- Generation Time: Sep 26, 2020 at 05:35 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `dateiregister` (
   `ID` smallint(5) UNSIGNED NOT NULL,
-  `Filename` varchar(50) NOT NULL,
+  `filepath` varchar(100) NOT NULL,
   `Instrumenten_ID` smallint(6) NOT NULL,
   `hinzugefuegt_am` date NOT NULL,
   `Dateityp` varchar(20) NOT NULL,
