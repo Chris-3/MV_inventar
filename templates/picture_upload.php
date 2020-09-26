@@ -50,12 +50,12 @@ function save_picture($ID)
 }
 
     
-function register_file_sql($tables_column_names)
+function register_file_sql($ID, $new_path, $extension)
 {
     global $_POST;
     global $DEBUG;
     $table = array("dateien");
-    $exclude = array("ID");
+    //$exclude = array("ID");
     $insert_data = $fields = $values = array();
 
     //Hier werden die Eingaben des Formulars auf 
@@ -69,16 +69,19 @@ function register_file_sql($tables_column_names)
    
     
     //Hier wird ueberprueft ob es die Seriennummer bereits gibt
-    $result = mysqli_fetch_array(runSQL("SELECT COUNT(*) FROM instrumente WHERE Seriennummer = '$Seriennummer' "), MYSQLI_NUM);
-    if ($result[0] > 0) return 'Es ist bereits ein Instrument mit der Seriennummer ' . $Seriennummer . ' registriert';
+    $result = mysqli_fetch_array(
+        runSQL("SELECT COUNT(*) FROM dateiregister WHERE filepath = '$new_path' "), MYSQLI_NUM);
+    if ($result[0] > 0) 
+    return 'Es ist bereits eine Datei mit dem Namen ' . $new_path . ' registriert';
 
     //Hier wird aus den Formulareingaben die Bezeichung des Instrumentes generiert
-    $result = mysqli_fetch_assoc(runSQL("SELECT Instrumententyp FROM instrumententypen WHERE ID = '$Instrumententyp' "));
+  /*   $result = mysqli_fetch_assoc(
+        runSQL("SELECT Instrumententyp FROM instrumententypen WHERE ID = '$Instrumententyp' "));
     $_POST["Bezeichnung"] =
         ($Namenszusatz ? ($Namenszusatz . "-") : "")
         . $result["Instrumententyp"] . " 
         " . ($Stimmung ? (" in " . $Stimmung) : "");
-
+ */
     if (!$ausgegeben_am) $ausgegeben_am = date("Y-m-d");
 
     for ($i = 0; $i < $tables_column_names; $i++) {
