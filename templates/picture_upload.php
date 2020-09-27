@@ -45,18 +45,18 @@ function save_picture($ID)
 
     //Alles okay, verschiebe Datei an neuen Pfad
     move_uploaded_file($_FILES['datei']['tmp_name'], $new_path);
-    register_file_sql($ID, $new_path, $extension);
+    register_file_sql($ID, $new_path, $extension, $_FILES['datei']['size']);
     echo 'Bild erfolgreich hochgeladen: <a href="' . $new_path . '">' . $new_path . '</a>';
 }
 
     
-function register_file_sql($ID, $new_path, $extension)
+function register_file_sql($ID, $new_path, $extension, $size)
 {
     global $_POST;
     global $DEBUG;
     $table = array("dateien");
     //$exclude = array("ID");
-    $insert_data = $fields = $values = array();
+   // $insert_data = $fields = $values = array();
 
     //Hier werden die Eingaben des Formulars auf 
     //verstecken Code aka einen Hackangriff untersucht
@@ -82,8 +82,17 @@ function register_file_sql($ID, $new_path, $extension)
         . $result["Instrumententyp"] . " 
         " . ($Stimmung ? (" in " . $Stimmung) : "");
  */
-    if (!$ausgegeben_am) $ausgegeben_am = date("Y-m-d");
-
+    $hinzugefuegt_am = date("Y-m-d");
+    runSQL("INSERT INTO dateiregister ( filepath, Instrumenten_ID, hinzugefuegt_am, Dateityp, Dateigroesse) 
+    VALUES ('" . $new_path . "','" . $ID . "','" . $hinzugefuegt_am . "','" . $extension . "','" . $size . "')");
+   /*  BLE `dateiregister` (
+        `ID` smallint(5) UNSIGNED NOT NULL,
+        `filepath` varchar(100) NOT NULL,
+        `Instrumenten_ID` smallint(6) NOT NULL,
+        `hinzugefuegt_am` date NOT NULL,
+        `Dateityp` varchar(20) NOT NULL,
+        `Dateigroesse` int(11) NOT NULL */
+/* 
     for ($i = 0; $i < $tables_column_names; $i++) {
         if (!$ausgegeben && $i == 1) break;
         prepare_data_for_sql($tables_column_names[$i], $exclude, $fields, $values);
@@ -95,7 +104,7 @@ function register_file_sql($ID, $new_path, $extension)
             $_POST["Musiker_ID"] = $insert_data["mysql_insert_id"];
         } else return $insert_data["mysql_error"];
     }
-    return $_POST["Instrumenten_ID"];
+    return $_POST["Instrumenten_ID"]; */
 }
 
 
