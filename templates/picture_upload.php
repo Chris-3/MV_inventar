@@ -52,59 +52,19 @@ function save_picture($ID)
     
 function register_file_sql($ID, $new_path, $extension, $size)
 {
-    global $_POST;
     global $DEBUG;
-    $table = array("dateien");
-    //$exclude = array("ID");
-   // $insert_data = $fields = $values = array();
-
-    //Hier werden die Eingaben des Formulars auf 
-    //verstecken Code aka einen Hackangriff untersucht
-   //$Seriennummer = test_input($_POST["Seriennummer"]);
-   // $Instrumententyp = test_input($_POST["Instrumententyp"]);
-    //$Stimmung = test_input($_POST["Stimmung"]);
-  //  $ausgegeben_am = test_input($_POST["ausgegeben_am"]);
-  //  $Namenszusatz = test_input($_POST["Namenszusatz"]);
-    //$ausgegeben = test_input($_POST["Ausgegeben"]);
-   
-    
+  
     //Hier wird ueberprueft ob es die Seriennummer bereits gibt
     $result = mysqli_fetch_array(
         runSQL("SELECT COUNT(*) FROM dateiregister WHERE filepath = '$new_path' "), MYSQLI_NUM);
     if ($result[0] > 0) 
     return 'Es ist bereits eine Datei mit dem Namen ' . $new_path . ' registriert';
 
-    //Hier wird aus den Formulareingaben die Bezeichung des Instrumentes generiert
-  /*   $result = mysqli_fetch_assoc(
-        runSQL("SELECT Instrumententyp FROM instrumententypen WHERE ID = '$Instrumententyp' "));
-    $_POST["Bezeichnung"] =
-        ($Namenszusatz ? ($Namenszusatz . "-") : "")
-        . $result["Instrumententyp"] . " 
-        " . ($Stimmung ? (" in " . $Stimmung) : "");
- */
+  
     $hinzugefuegt_am = date("Y-m-d");
     runSQL("INSERT INTO dateiregister ( filepath, Instrumenten_ID, hinzugefuegt_am, Dateityp, Dateigroesse) 
     VALUES ('" . $new_path . "','" . $ID . "','" . $hinzugefuegt_am . "','" . $extension . "','" . $size . "')");
-   /*  BLE `dateiregister` (
-        `ID` smallint(5) UNSIGNED NOT NULL,
-        `filepath` varchar(100) NOT NULL,
-        `Instrumenten_ID` smallint(6) NOT NULL,
-        `hinzugefuegt_am` date NOT NULL,
-        `Dateityp` varchar(20) NOT NULL,
-        `Dateigroesse` int(11) NOT NULL */
-/* 
-    for ($i = 0; $i < $tables_column_names; $i++) {
-        if (!$ausgegeben && $i == 1) break;
-        prepare_data_for_sql($tables_column_names[$i], $exclude, $fields, $values);
-        $insert_data = insert_data_sql($table[$i], $fields, $values);
-
-        if ($insert_data["mysql_error"] == "" && $table[$i] == "instrumente") {
-            $_POST["Instrumenten_ID"] = $insert_data["mysql_insert_id"];
-        } else if ($insert_data["mysql_error"] == "" && $table[$i] == "musiker") {
-            $_POST["Musiker_ID"] = $insert_data["mysql_insert_id"];
-        } else return $insert_data["mysql_error"];
-    }
-    return $_POST["Instrumenten_ID"]; */
+  
 }
 
 
