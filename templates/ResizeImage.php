@@ -1,6 +1,6 @@
 <?php
 // @source: http://www.paulund.co.uk/resize-image-class-php
-
+// https://gist.github.com/egulhan/504d81ae6889ab32486f
 /**
  * Resize image class will allow you to resize an image
  *

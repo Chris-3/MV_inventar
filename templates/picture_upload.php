@@ -2,7 +2,6 @@
 
 function save_picture($ID)
 {
-    
     $upload_folder = 'Bilder/'; //Das Upload-Verzeichnis
     // $filename = pathinfo($_FILES['datei']['name'], PATHINFO_FILENAME);
     $filename = $ID;
@@ -17,11 +16,11 @@ function save_picture($ID)
     }
 
     //Überprüfung der Dateigröße
-    $max_size = 2000 * 1200; //500 KB
-    if ($_FILES['datei']['size'] > $max_size) {
-        die("Bitte keine Dateien größer 2000x1200 Pixel hochladen");
-    }
-
+    /*  $max_size = 2000 * 1200; //500 KB
+     if ($_FILES['datei']['size'] > $max_size) {
+         die("Bitte keine Dateien größer 2000x1200 Pixel hochladen");
+     }
+ */
     //Überprüfung dass das Bild keine Fehler enthält
     if (function_exists('exif_imagetype')) { //exif_imagetype erfordert die exif-Erweiterung
         $allowed_types = array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF);
@@ -44,7 +43,12 @@ function save_picture($ID)
     }
 
     //Alles okay, verschiebe Datei an neuen Pfad
+    //move_uploaded_file($_FILES['datei']['tmp_name'], $new_path);
     move_uploaded_file($_FILES['datei']['tmp_name'], $new_path);
+    // Resize Auto Size From Given Width And Height
+    $resize = new ResizeImage($new_path);
+    $resize->resizeTo(1000, 1000);
+    $resize->saveImage($new_path);
     register_file_sql($ID, $new_path, $extension, $_FILES['datei']['size']);
     echo 'Bild erfolgreich hochgeladen: <a href="' . $new_path . '">' . $new_path . '</a>';
 }
@@ -56,15 +60,17 @@ function register_file_sql($ID, $new_path, $extension, $size)
   
     //Hier wird ueberprueft ob es die Seriennummer bereits gibt
     $result = mysqli_fetch_array(
-        runSQL("SELECT COUNT(*) FROM dateiregister WHERE filepath = '$new_path' "), MYSQLI_NUM);
-    if ($result[0] > 0) 
-    return 'Es ist bereits eine Datei mit dem Namen ' . $new_path . ' registriert';
+        runSQL("SELECT COUNT(*) FROM dateiregister WHERE filepath = '$new_path' "),
+        MYSQLI_NUM
+    );
+    if ($result[0] > 0) {
+        return 'Es ist bereits eine Datei mit dem Namen ' . $new_path . ' registriert';
+    }
 
   
     $hinzugefuegt_am = date("Y-m-d");
     runSQL("INSERT INTO dateiregister ( filepath, Instrumenten_ID, hinzugefuegt_am, Dateityp, Dateigroesse) 
     VALUES ('" . $new_path . "','" . $ID . "','" . $hinzugefuegt_am . "','" . $extension . "','" . $size . "')");
-  
 }
 
 
@@ -75,4 +81,3 @@ function test_input($data)
     $data = htmlspecialchars($data);
     return $data;
 }
-
