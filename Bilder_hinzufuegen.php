@@ -3,6 +3,7 @@ require("templates/header.php");
 require("templates/connectDB.php");
 require("templates/register_instr_type.php");
 require("templates/picture_upload.php");
+require("templates/ResizeImage.php");
 $instrument_ID;
 if (isset($_GET['Instrumenten_ID'])) {
     $instrument_ID = $_GET['Instrumenten_ID'];
