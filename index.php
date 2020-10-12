@@ -8,7 +8,8 @@
     <?php require("templates/connectDB.php");
     $tables = array("instrumente", "musiker", "leihregister");
     $db_res = runSQL("SELECT * FROM " . implode(", ", $tables) . "");
-    $exclude = array("ID", "Musiker_ID", "Instrumenten_ID", "Instrumententyp", "Stimmung", "Namenszusatz", "ausgegeben_am", "zurückgegeben_am");
+    //$exclude = array("ID", "Musiker_ID", "Instrumenten_ID", "Instrumententyp", "Stimmung", "Namenszusatz", "ausgegeben_am", "zurückgegeben_am");
+    $exclude = array("");
     $columns = array();
 
     foreach ($tables as $table) {
