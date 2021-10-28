@@ -42,8 +42,11 @@
                 <tr>
 
                     <td>
+                        <!-- Button for viewing instrument -->
                         <button type="submit" name="Instrumenten_ID" value="<?= $row["ID"] ?>"><i class="fas fa-eye"></i></button>
+                        <!-- Button for changing instr info -->
                         <button formaction="Instrument_bearbeiten.php" type="submit" name="Instrumenten_ID" value="<?= $row["ID"] ?>"><i class="fas fa-pen"></i></button>
+                        <!-- Button for adding new Pictures -->
                         <button formaction="Bilder_hinzufuegen.php" type="submit" name="Instrumenten_ID" value="<?= $row["ID"] ?>"><i class="fas fa-camera"></i></button>
 
                     </td>

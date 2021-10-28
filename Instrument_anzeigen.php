@@ -2,7 +2,6 @@
 require("templates/connectDB.php");
 require("templates/add_new_instrument.php");
 include("templates/phpqrcode/qrlib.php");
-
 $tables = array(
     get_columnnames("instrumente"),
     get_columnnames("musiker"),
@@ -30,19 +29,20 @@ if (!isset($_GET['Instrumenten_ID'])) {
         $data[1] = runSQL("SELECT * FROM dateiregister WHERE Instrumenten_ID='$ID'");
         $data[2] = runSQL("SELECT * FROM leihregister WHERE Instrumenten_ID='$ID'");
         $data[3] = runSQL("SELECT * FROM musiker WHERE ID=(SELECT Musiker_ID FROM leihregister WHERE Instrumenten_ID='$ID')");
-        ?>
-
-        <?php
+        QRcode::png("http://mvhofki.ddns.net/Instrument_anzeigen.php?Instrumenten_ID=$ID", 'Bilder/tmp.png');
+        echo '<img src="Bilder/tmp.png" style="width:250px;height:auto;">';
         while ($picture = mysqli_fetch_assoc($data[1])) {
             //echo 'pic: ' . $picture['filepath'] . '</br>'; 
         ?>
             <img src="<?= $picture['filepath'] ?>" style="width:250px;height:auto;">
+
         <?php
         }
         echo '</br></br>';
         foreach ($data as $db_res) {
             while ($row = mysqli_fetch_assoc($db_res)) {
                 print_r($row);
+
                 /*    if (in_array('filepath',$row))
                    {
                        echo 'Bild hier'; */
