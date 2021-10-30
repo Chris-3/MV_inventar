@@ -15,7 +15,7 @@ function runSQL($sql)
 {
     global $db_link;
     $db_res = mysqli_query($db_link, $sql)
-        or die("SQL-Abfrage: " . $sql . " Fehler: " . mysqli_error($db_link));
+    or die("SQL-Abfrage: " . $sql . " Fehler: " . mysqli_error($db_link));
     return $db_res;
 }
 
@@ -57,7 +57,6 @@ function insert_data_sql($table, &$fields, &$values)
         return array("mysql_error" => mysqli_error($db_link));
     }
 }
-
 
 
 function prepare_data_for_sql($columns, $exclude, &$fields, &$values)
