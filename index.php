@@ -21,12 +21,12 @@
 
 
     ?>
-    <h1>RWD List to Table</h1>
+    <h1>Liste aller Instrumente</h1>
     <form action="Instrument_anzeigen.php" method="GET">
 
         <table class="rwd-table">
             <tr><?php
-                echo ('<th> </th>');
+               echo ('<th> </th>');
                 foreach ($columns as list($column_name, $column_comment)) {
                     if (!in_array($column_name, $exclude)) {
                         echo ('<th>' . $column_name . ' </th>');
@@ -40,17 +40,19 @@
             while ($row = mysqli_fetch_assoc($db_res)) {
             ?>
                 <tr>
-
                     <td>
-                        <!-- Button for viewing instrument -->
-                        <button type="submit" name="Instrumenten_ID" value="<?= $row["ID"] ?>"><i class="fas fa-eye"></i></button>
-                        <!-- Button for changing instr info -->
-                        <button formaction="Instrument_bearbeiten.php" type="submit" name="Instrumenten_ID" value="<?= $row["ID"] ?>"><i class="fas fa-pen"></i></button>
-                        <!-- Button for adding new Pictures -->
-                        <button formaction="Bilder_hinzufuegen.php" type="submit" name="Instrumenten_ID" value="<?= $row["ID"] ?>"><i class="fas fa-camera"></i></button>
+                        <!-- Button for viewing instrument <i class="fas fa-eye">-->
+                        <button type="submit" name="Instrumenten_ID" value="<?= $row["ID"] ?>">s</i></button>
+                        <!-- Button for changing instr info <i class="fas fa-pen">-->
+                        <button formaction="Instrument_bearbeiten.php" type="submit" name="Instrumenten_ID" value="<?= $row["ID"] ?>">b</i></button>
+                        <!-- Button for adding new Pictures <i class="fas fa-camera">-->
+                        <button formaction="Bilder_hinzufuegen.php" type="submit" name="Instrumenten_ID" value="<?= $row["ID"] ?>"></i>p</button>
+                        <!-- Button for deleting entry <i class="fas fa-dumpster">-->
+                        <button formaction="Instrument_loeschen.php" type="submit" name="Instrumenten_ID" value="<?= $row["ID"] ?>">d</i></button>
 
                     </td>
                 <?php
+
                 foreach ($columns as list($column_name, $column_comment)) {
                     if (!in_array($column_name, $exclude)) {
                         if ($row[$column_name] != "") {

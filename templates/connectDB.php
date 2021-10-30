@@ -87,3 +87,10 @@ function prepare_data_for_sql($columns, $exclude, &$fields, &$values)
         echo "values = " . $values;
     }
 }
+
+function delete_instrument_with_ID($ID)
+{
+    runSQL("DELETE FROM instrumente WHERE ID ='$ID'");
+    runSQL("DELETE FROM dateiregister WHERE Instrumenten_ID ='$ID'");
+    runSQL("DELETE FROM leihregister WHERE Instrumenten_ID ='$ID'");
+}

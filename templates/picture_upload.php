@@ -81,3 +81,7 @@ function test_input($data)
     $data = htmlspecialchars($data);
     return $data;
 }
+
+function delete_pic($filepath){
+    unlink($filepath);
+}
