@@ -117,5 +117,22 @@ class Database
         runSQL("DELETE FROM mvhofkirchen.leihregister WHERE Instrumenten_ID ='$id'");
     }
 
+    private function exists($table, $column, $data): bool
+    {
+        $data = mysqli_real_escape_string($this->db_link, $data);
+        $sql = "SELECT COUNT(*) FROM mvhofkirchen." . $table . " WHERE " . $column . " = '" . $data . "'";
+        $tmp = mysqli_fetch_array($this->runSQL($sql));
+        return $tmp[0] > 0;
+    }
+
+    public function instr_type_exists($data): bool
+    {
+        return $this->exists('instrumententypen', 'Instrumententyp', $data);
+    }
+
+    public function user_exists($firstn, $lastn): bool
+    {
+        return $this->exists('musiker', 'Instrumententyp', $firstn);
+    }
 
 }

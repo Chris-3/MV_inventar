@@ -1,14 +1,20 @@
 <?php require("templates/header.php");
-require("templates/connectDB.php");
-require("templates/register_instr_type.php");
-require("templates/add_new_instrument.php");
+//require("templates/connectDB.php");
+//require("templates/register_instr_type.php");
+//require("templates/add_new_instrument.php");
+require 'classes/Input.php';
 
+$_POST['submit']='speichern';
+$_POST['new_type']='Pauk';
+$_POST['category_']=1;
 if (isset($_POST['submit'])) {
     echo '<div id="small_margin">';
     if (empty($_POST['new_type'])) {
         echo '</p> Bitte Felder ausfüllen.';
     } else {
-        $erg = register_instr_type($_POST['category_'], $_POST['new_type']);
+        $in = new Input(0);
+        $erg = $in->new_instr_type($_POST['category_'], $_POST['new_type']);
+//        $erg = register_instr_type($_POST['category_'], $_POST['new_type']);
         echo '<p>' . $erg . '</p>';
     }
     ?>

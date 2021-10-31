@@ -55,6 +55,5 @@ class Output
         }
         array_push($path_arr, 'templates/Add-a-photo-01.jpg');
         return $path_arr;
-
     }
 }

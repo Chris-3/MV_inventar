@@ -2,7 +2,7 @@
 function register($tables_column_names)
 {
     global $_POST;
-    global $DEBUG;
+
     $table = array("instrumente", "musiker", "leihregister");
     $exclude = array("ID");
     $insert_data = $fields = $values = array();
