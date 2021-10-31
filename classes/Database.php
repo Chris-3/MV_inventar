@@ -100,7 +100,8 @@ class Database
                 $sql = "SELECT * FROM mvhofkirchen.leihregister WHERE Instrumenten_ID='$id'";
                 break;
             case 'musiker':
-                $sql = "SELECT * FROM mvhofkirchen.musiker WHERE ID=(SELECT Musiker_ID FROM leihregister WHERE Instrumenten_ID='$id')";
+//                $sql = "SELECT * FROM mvhofkirchen.musiker WHERE ID=(SELECT Musiker_ID FROM leihregister WHERE Instrumenten_ID='$id')";
+                $sql = "SELECT * FROM mvhofkirchen.musiker WHERE ID='$id'";
                 break;
             default:
                 echo 'invalid table';
