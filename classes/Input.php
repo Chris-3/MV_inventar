@@ -48,13 +48,13 @@ class Input
     }
 
 
-    function save_picture($_FILES)
+    function save_picture($file)
     {
         $upload_folder = 'Bilder/'; //Das Upload-Verzeichnis
         // $filename = pathinfo($_FILES['datei']['name'], PATHINFO_FILENAME);
         $filename = $this->id;
 
-        $extension = strtolower(pathinfo($_FILES['datei']['name'], PATHINFO_EXTENSION));
+        $extension = strtolower(pathinfo($file['datei']['name'], PATHINFO_EXTENSION));
         
         //Überprüfung der Dateiendung
         $allowed_extensions = array('png', 'jpg', 'jpeg', 'gif');
@@ -71,7 +71,7 @@ class Input
         //Überprüfung dass das Bild keine Fehler enthält
         if (function_exists('exif_imagetype')) { //exif_imagetype erfordert die exif-Erweiterung
             $allowed_types = array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF);
-            $detected_type = exif_imagetype($_FILES['datei']['tmp_name']);
+            $detected_type = exif_imagetype($file['datei']['tmp_name']);
             if (!in_array($detected_type, $allowed_types)) {
                 die("Nur der Upload von Bilddateien ist gestattet");
             }
@@ -91,12 +91,12 @@ class Input
 
         //Alles okay, verschiebe Datei an neuen Pfad
         //move_uploaded_file($_FILES['datei']['tmp_name'], $new_path);
-        move_uploaded_file($_FILES['datei']['tmp_name'], $new_path);
+        move_uploaded_file($file['datei']['tmp_name'], $new_path);
         // Resize Auto Size From Given Width And Height
         $resize = new ResizeImage($new_path);
         $resize->resizeTo(1000, 1000);
         $resize->saveImage($new_path);
-        $this->db->register_file_sql($this->id, $new_path, $extension, $_FILES['datei']['size']);
+        $this->db->register_file_sql($this->id, $new_path, $extension, $file['datei']['size']);
         echo 'Bild erfolgreich hochgeladen: <a href="' . $new_path . '">' . $new_path . '</a>';
     }
 
