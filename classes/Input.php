@@ -1,6 +1,7 @@
 <?php
 require 'Database.php';
 
+//This class generates input fields and prepares the data for Database input
 class Input
 {
     private string $id;
@@ -39,8 +40,77 @@ class Input
         if ($this->db->instr_type_exists($new_type)) {
             return 'Es gibt schon einen Instrumententypen mit dem Namen ' . $new_type;
         }
-        runSQL("INSERT INTO instrumententypen ( Instrumententyp, Register) VALUES ('" . $new_type . "','" . $category . "')");
+        $data = array('Instrumententyp' => $new_type, 'Register' => $category);
+        $this->db->insert_data('instrumententypen', $data);
+//        runSQL("INSERT INTO instrumententypen ( Instrumententyp, Register) VALUES ('" . $new_type . "','" . $category . "')");
 
         return 'Der Instrumententyp wurde erfolgreich angelegt';
     }
+
+
+    function save_picture($_FILES)
+    {
+        $upload_folder = 'Bilder/'; //Das Upload-Verzeichnis
+        // $filename = pathinfo($_FILES['datei']['name'], PATHINFO_FILENAME);
+        $filename = $this->id;
+
+        $extension = strtolower(pathinfo($_FILES['datei']['name'], PATHINFO_EXTENSION));
+        
+        //Überprüfung der Dateiendung
+        $allowed_extensions = array('png', 'jpg', 'jpeg', 'gif');
+        if (!in_array($extension, $allowed_extensions)) {
+            die("Ungültige Dateiendung. Nur png, jpg, jpeg und gif-Dateien sind erlaubt");
+        }
+
+        //Überprüfung der Dateigröße
+        /*  $max_size = 2000 * 1200; //500 KB
+         if ($_FILES['datei']['size'] > $max_size) {
+             die("Bitte keine Dateien größer 2000x1200 Pixel hochladen");
+         }
+     */
+        //Überprüfung dass das Bild keine Fehler enthält
+        if (function_exists('exif_imagetype')) { //exif_imagetype erfordert die exif-Erweiterung
+            $allowed_types = array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF);
+            $detected_type = exif_imagetype($_FILES['datei']['tmp_name']);
+            if (!in_array($detected_type, $allowed_types)) {
+                die("Nur der Upload von Bilddateien ist gestattet");
+            }
+        }
+
+        //Pfad zum Upload
+        $new_path = $upload_folder . $filename . '.' . $extension;
+
+        //Neuer Dateiname falls die Datei bereits existiert
+        if (file_exists($new_path)) { //Falls Datei existiert, hänge eine Zahl an den Dateinamen
+            $id = 1;
+            do {
+                $new_path = $upload_folder . $filename . '_' . $id . '.' . $extension;
+                $id++;
+            } while (file_exists($new_path));
+        }
+
+        //Alles okay, verschiebe Datei an neuen Pfad
+        //move_uploaded_file($_FILES['datei']['tmp_name'], $new_path);
+        move_uploaded_file($_FILES['datei']['tmp_name'], $new_path);
+        // Resize Auto Size From Given Width And Height
+        $resize = new ResizeImage($new_path);
+        $resize->resizeTo(1000, 1000);
+        $resize->saveImage($new_path);
+        $this->db->register_file_sql($this->id, $new_path, $extension, $_FILES['datei']['size']);
+        echo 'Bild erfolgreich hochgeladen: <a href="' . $new_path . '">' . $new_path . '</a>';
+    }
+
+    function test_input($data)
+    {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+
+    function delete_pic($filepath)
+    {
+        unlink($filepath);
+    }
+
 }

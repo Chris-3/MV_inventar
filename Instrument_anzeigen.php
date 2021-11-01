@@ -1,8 +1,9 @@
 <?php require("templates/header.php");
-require("classes/Database.php");
 require("templates/add_new_instrument.php");
-include("classes/phpqrcode/qrlib.php");
+
 require 'classes/Output.php';
+require 'classes/Database.php';
+include 'classes/phpqrcode/qrlib.php';
 
 global $_GET;
 //$_GET['Instrumenten_ID'] = 3;

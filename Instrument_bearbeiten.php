@@ -1,5 +1,5 @@
 <?php require("templates/header.php");
-require("templates/connectDB.php");
+//require("templates/connectDB.php");
 require("templates/add_new_instrument.php");
 $tables = array(
     get_columnnames("instrumente"),

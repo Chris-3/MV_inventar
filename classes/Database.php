@@ -45,10 +45,19 @@ class Database
         return $columnArray;
     }
 
-    public function insert_data($table, &$fields, &$values)
+    public function insert_data($table, array &$data)
     {
+        $fields = "";
+        $values = "";
 
-        if (mysqli_query($this->db_link, "INSERT INTO `$table` ($fields) VALUES ($values)")) {
+        foreach ($data as $key => $value) {
+            $fields = $fields . ", " . $key;
+            $values = $values . ", " . $value;
+        }
+
+        $sql = "INSERT INTO `" . $table . "` (" . $fields . ") VALUES (" . $values . ")";
+
+        if (mysqli_query($this->db_link, $sql)) {
             return array(
                 "mysql_error" => false,
                 "mysql_insert_id" => mysqli_insert_id($this->db_link),
@@ -130,9 +139,25 @@ class Database
         return $this->exists('instrumententypen', 'Instrumententyp', $data);
     }
 
-    public function user_exists($firstn, $lastn): bool
+    public function user_exists($firstName, $lastName): bool
     {
-        return $this->exists('musiker', 'Instrumententyp', $firstn);
+        return ($this->exists('musiker', 'Instrumententyp', $firstName)) && ($this->exists('musiker', 'Instrumententyp', $lastName));
     }
+
+    function register_file_sql($ID, $new_path, $extension, $size)
+    {
+        //Hier wird ueberprueft ob es die Seriennummer bereits gibt
+        $result = mysqli_fetch_array(
+            runSQL("SELECT COUNT(*) FROM dateiregister WHERE filepath = '$new_path' "),
+            MYSQLI_NUM
+        );
+        if ($result[0] > 0) {
+            return 'Es ist bereits eine Datei mit dem Namen ' . $new_path . ' registriert';
+        }
+        $hinzugefuegt_am = date("Y-m-d");
+        runSQL("INSERT INTO dateiregister ( filepath, Instrumenten_ID, hinzugefuegt_am, Dateityp, Dateigroesse) 
+    VALUES ('" . $new_path . "','" . $ID . "','" . $hinzugefuegt_am . "','" . $extension . "','" . $size . "')");
+    }
+
 
 }
