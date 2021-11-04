@@ -59,9 +59,9 @@ class Database
             $values = $values . ", " . "'" . $value . "'";
         }
 
-        $sql = "INSERT INTO `mvhofkirchen." . $table . "` (" . $fields . ") VALUES (" . $values . ")";
-
+        $sql = "INSERT INTO `" . $table . "` (" . $fields . ") VALUES (" . $values . ")";
         $this->runSQL($sql);
+        return mysqli_insert_id($this->db_link);
     }
 
     public function update_data($table, array $pos, array &$data)
@@ -79,6 +79,7 @@ class Database
 //        $sql = "INSERT INTO `mvhofkirchen." . $table . "` (" . $fields . ") VALUES (" . $values . ")";
         $sql = "UPDATE mvhofkirchen." . $table . " SET " . $values . " WHERE " . key($pos) . " = " . array_values($pos)[0];
         $this->runSQL($sql);
+        return mysqli_insert_id($this->db_link);
     }
 
     public function prepare_data_for_sql($columns, $exclude, &$fields, &$values)
@@ -103,6 +104,12 @@ class Database
     {
         $sql = "SELECT * FROM " . $table;
         return $this->runSQL($sql);
+    }
+
+    public function get_instr_type($Instrumententyp)
+    {
+        $sql = "SELECT Instrumententyp FROM instrumententypen WHERE ID = '$Instrumententyp'";
+        return mysqli_fetch_array($this->runSQL($sql))[0];
     }
 
     public function get_data_from_table_with_ID($table, $id)

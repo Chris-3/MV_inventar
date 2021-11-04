@@ -14,6 +14,18 @@ class Input
         $this->db = new Database();
     }
 
+    public static
+    function edit_instr(string $_id)
+    {
+        return new Input($_id);
+    }
+
+    public static
+    function new_instr()
+    {
+        return new Input(-1);
+    }
+
     public
     function register($tables_column_names)
     {
@@ -24,84 +36,88 @@ class Input
         $insert_data = $fields = $values = array();
         $data = array();
 
+        print_r($_POST);
         //Hier werden die Eingaben des Formulars auf verstecken Code aka einen Hackangriff untersucht
         foreach ($_POST as $key => $value) {
+            if ($key == 'submit' || $key == 'register') continue;
             $value = $this->test_input($value);
             $data += [$key => $value];
         }
+        $tmp = $this->db->get_instr_type($data['Instrumententyp']);
+        $v =
+            ($data['Namenszusatz'] ? ($data['Namenszusatz'] . "-") : "")
+            . $tmp . " " . ($data['Stimmung'] ? (" in " . $data['Stimmung']) : "");
+        $data += ['Bezeichnung' => $v];
+        echo '<br>';
+        print_r($data);
 
-        $Seriennummer = test_input($_POST["Seriennummer"]);
-        $Instrumententyp = test_input($_POST["Instrumententyp"]);
-        $Stimmung = test_input($_POST["Stimmung"]);
-        $ausgegeben_am = test_input($_POST["ausgegeben_am"]);
-        $Namenszusatz = test_input($_POST["Namenszusatz"]);
-        $ausgegeben = test_input($_POST["Ausgegeben"]);
+        if ($this->id == -1) {
+            return $this->db->insert_data("instrumente", $data);
+        } else {
+            return $this->db->update_data("instrumente", $this->id, $data);
+        }
+
+
+//        $Seriennummer = test_input($_POST["Seriennummer"]);
+//        $Instrumententyp = test_input($_POST["Instrumententyp"]);
+//        $Stimmung = test_input($_POST["Stimmung"]);
+//        $ausgegeben_am = test_input($_POST["ausgegeben_am"]);
+//        $Namenszusatz = test_input($_POST["Namenszusatz"]);
+//        $ausgegeben = test_input($_POST["Ausgegeben"]);
 
         //Hier wird ueberprueft ob es die Seriennummer bereits gibt
-        $result = mysqli_fetch_array(runSQL("SELECT COUNT(*) FROM instrumente WHERE Seriennummer = '$Seriennummer' "), MYSQLI_NUM);
-        if ($result[0] > 0) return 'Es ist bereits ein Instrument mit der Seriennummer ' . $Seriennummer . ' registriert';
+//        $result = mysqli_fetch_array(runSQL("SELECT COUNT(*) FROM instrumente WHERE Seriennummer = '$Seriennummer' "), MYSQLI_NUM);
+//        if ($result[0] > 0) return 'Es ist bereits ein Instrument mit der Seriennummer ' . $Seriennummer . ' registriert';
 
         //Hier wird aus den Formulareingaben die Bezeichung des Instrumentes generiert
-        $result = mysqli_fetch_assoc(runSQL("SELECT Instrumententyp FROM instrumententypen WHERE ID = '$Instrumententyp' "));
-        $_POST["Bezeichnung"] =
-            ($Namenszusatz ? ($Namenszusatz . "-") : "")
-            . $result["Instrumententyp"] . " 
-        " . ($Stimmung ? (" in " . $Stimmung) : "");
-
-        if (!$ausgegeben_am) $ausgegeben_am = date("Y-m-d");
-
-        for ($i = 0; $i < $tables_column_names; $i++) {
-            if (!$ausgegeben && $i == 1) break;
-            prepare_data_for_sql($tables_column_names[$i], $exclude, $fields, $values);
-            $insert_data = insert_data_sql($table[$i], $fields, $values);
-
-            if ($insert_data["mysql_error"] == "" && $table[$i] == "instrumente") {
-                $_POST["Instrumenten_ID"] = $insert_data["mysql_insert_id"];
-            } else if ($insert_data["mysql_error"] == "" && $table[$i] == "musiker") {
-                $_POST["Musiker_ID"] = $insert_data["mysql_insert_id"];
-            } else return $insert_data["mysql_error"];
-        }
-        return $_POST["Instrumenten_ID"];
+//        $result = mysqli_fetch_assoc(runSQL("SELECT Instrumententyp FROM instrumententypen WHERE ID = '$Instrumententyp' "));
+//        $_POST["Bezeichnung"] =
+//            ($Namenszusatz ? ($Namenszusatz . "-") : "")
+//            . $result["Instrumententyp"] . "
+//        " . ($Stimmung ? (" in " . $Stimmung) : "");
+//
+//        if (!$ausgegeben_am) $ausgegeben_am = date("Y-m-d");
+//
+//        for ($i = 0; $i < $tables_column_names; $i++) {
+//            if (!$ausgegeben && $i == 1) break;
+//            prepare_data_for_sql($tables_column_names[$i], $exclude, $fields, $values);
+//            $insert_data = insert_data_sql($table[$i], $fields, $values);
+//
+//            if ($insert_data["mysql_error"] == "" && $table[$i] == "instrumente") {
+//                $_POST["Instrumenten_ID"] = $insert_data["mysql_insert_id"];
+//            } else if ($insert_data["mysql_error"] == "" && $table[$i] == "musiker") {
+//                $_POST["Musiker_ID"] = $insert_data["mysql_insert_id"];
+//            } else return $insert_data["mysql_error"];
+//        }
+//        return $_POST["Instrumenten_ID"];
     }
 
     public
     function instr_info()
     {
         $columns = $this->db->get_columnnames("instrumente");
+
+        $this->get_instr_type_ID();
+
         foreach ($columns as list($column_name, $column_comment)) {
             switch ($column_name) {
                 case "ID":
-//            case "Instrumenten_ID":
-//            case "Musiker_ID":
-//            case "zurückgegeben_am":
                 case "Bezeichnung":
-                    break;
                 case "Instrumententyp":
-                    $this->get_instr_type_ID($column_name);
+                case "Ausgegeben":
                     break;
                 case "Baujahr":
                     $this->generate_years_dropdown($column_name, 1950);
                     break;
-                // case "Behälter/Schutz":
-                //     //in Arbeit
-                //     break;
-//            case "ausgegeben_am":
-//                generate_date_input($column_name);
-//                break;
-//
                 case "Zubehör":
                 case "Anmerkung":
                     $this->generate_textfield_input($column_name, $column_comment);
                     break;
-//            case "Vorname":
-//                echo '<h4>Daten des Musikers:</h4>';
                 default:
                     $this->default_input($column_name, $column_comment);
                     break;
             }
         }
-
-//        $this->db->get_data_from_table_with_ID("instrumente");
     }
 
     public
@@ -115,11 +131,6 @@ class Input
     {
         $this->generate_yes_no_input("Ausgegeben", "Ist das Instrument an einen Musiker ausgegeben?");
     }
-//    public
-//    function pictures()
-//    {
-//
-//    }
 
     public
     function new_instr_type($category, $new_type): string
@@ -203,8 +214,9 @@ class Input
     }
 
 
-    function get_instr_type_ID($instrument_type_ID)
+    function get_instr_type_ID()
     {
+        $instrument_type_ID = "Instrumententyp";
         $ID = 0;
         $db_instr_types = runSQL("SELECT * FROM instrumententypen");
         $instr_types_array = array(mysqli_fetch_array($db_instr_types, MYSQLI_NUM));
