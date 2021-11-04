@@ -62,12 +62,6 @@ class Input
             die("Ungültige Dateiendung. Nur png, jpg, jpeg und gif-Dateien sind erlaubt");
         }
 
-        //Überprüfung der Dateigröße
-        /*  $max_size = 2000 * 1200; //500 KB
-         if ($_FILES['datei']['size'] > $max_size) {
-             die("Bitte keine Dateien größer 2000x1200 Pixel hochladen");
-         }
-     */
         //Überprüfung dass das Bild keine Fehler enthält
         if (function_exists('exif_imagetype')) { //exif_imagetype erfordert die exif-Erweiterung
             $allowed_types = array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF);
@@ -90,7 +84,6 @@ class Input
         }
 
         //Alles okay, verschiebe Datei an neuen Pfad
-        //move_uploaded_file($_FILES['datei']['tmp_name'], $new_path);
         move_uploaded_file($file['datei']['tmp_name'], $new_path);
         // Resize Auto Size From Given Width And Height
         $resize = new ResizeImage($new_path);
