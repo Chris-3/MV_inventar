@@ -7,6 +7,7 @@ $tables = array(
     get_columnnames("leihregister"),
 );
 
+
 if (isset($_POST['submit'])) {
     if (0 && empty($_POST["Seriennummer"]) || empty($_POST["Hersteller"])) {
 ?> <div id="small_margin">

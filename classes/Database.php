@@ -26,7 +26,6 @@ class Database
 
     public function get_columnnames($table_name)
     {
-
         $table_name = mysqli_real_escape_string($this->db_link, $table_name);
 
         $db_res = $this->runSQL("SELECT column_name, column_comment 
@@ -84,7 +83,6 @@ class Database
 
     public function prepare_data_for_sql($columns, $exclude, &$fields, &$values)
     {
-
         $index = 0;
         $fields = [];
         $values = [];

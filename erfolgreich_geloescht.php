@@ -1,6 +1,6 @@
 <?php require("templates/header.php");
 //require("templates/connectDB.php");
-require("templates/add_new_instrument.php");
+//require("templates/add_new_instrument.php");
 require 'classes/Database.php';
 
 global $_GET;
