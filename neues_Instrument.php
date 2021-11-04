@@ -1,6 +1,4 @@
 <?php require("templates/header.php");
-require("templates/connectDB.php");
-require("templates/add_new_instrument.php");
 require 'classes/Input.php';
 
 //$_POST = [
@@ -18,41 +16,31 @@ $in = Input::new_instr();
 
 if (isset($_POST['submit'])) {
     if (0 && empty($_POST["Seriennummer"]) || empty($_POST["Hersteller"])) {
-        print_r($_POST);
+//        print_r($_POST);
+        echo 'Hallo';
         ?>
         <div id="small_margin">
             <p> Es müssen zumindest Hersteller und Seriennummer eingetragen sein!</p>
             <input type="button" onClick="history.go(-1);return true;" value="zurück zur Instrumentenregistrierung"/>
         </div>
         <?php
-//    } else if ($_POST["Ausgegeben"] && empty($_POST["Vorname"]) && empty($_POST["Nachname"])) {
-//        ?>
-        <!--        <div id="small_margin">-->
-        <!--            <p>Instrument ist ausgegeben Bitte Namen eintragen!</p>-->
-        <!--            <input type="button" onClick="history.go(-1);return true;" value="zurück zur Instrumentenregistrierung"/>-->
-        <!--        </div>-->
-        <!--        --><?php
     } else {
-        echo '<div id="small_margin">';
+//        echo '<div id="small_margin">';
 //        $erg = register($tables, $_POST);
-        $erg = $in->register("instrumente");
+        $new_id = $in->register("instrumente");
         ?>
-        <h4><?= $erg ?></h4>
-        <form action="Bilder_hinzufuegen.php" method="GET">
-            <p id="button">
-                <button type="submit" name="Instrumenten_ID" value="<?= $erg ?>">weiter zum Bilder
-                    hochladen
-                </button>
-            </p>
 
-        </form>
-        <p id="button"><input type="button" value="Zurück" onClick="history.go(-1);return true;"></p>
+        <script>
+            var id = <?php echo json_encode($new_id);?>;
+            myFunction();
 
-        <!-- <input type="button" onclick="window.location.href = 'Bilder_hinzufuegen.php';" value="weiter zum Bildupload" /></p> -->
-
-        </div>
+            function myFunction() {
+                // var tmp = window.location.hostname + "/Instrument_anzeigen.php?Instrumenten_ID=" + id;
+                var tmp = "/Instrument_anzeigen.php?Instrumenten_ID=" + id;
+                location.replace(tmp);
+            }
+        </script>
         <?php
-        print_r($_POST);
     }
 } else {
     ?>

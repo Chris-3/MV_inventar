@@ -1,5 +1,5 @@
 <?php require("templates/header.php");
-require("templates/add_new_instrument.php");
+//require("templates/add_new_instrument.php");
 
 require 'classes/Output.php';
 require 'classes/Database.php';

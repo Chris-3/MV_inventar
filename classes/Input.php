@@ -57,39 +57,6 @@ class Input
             return $this->db->update_data("instrumente", $this->id, $data);
         }
 
-
-//        $Seriennummer = test_input($_POST["Seriennummer"]);
-//        $Instrumententyp = test_input($_POST["Instrumententyp"]);
-//        $Stimmung = test_input($_POST["Stimmung"]);
-//        $ausgegeben_am = test_input($_POST["ausgegeben_am"]);
-//        $Namenszusatz = test_input($_POST["Namenszusatz"]);
-//        $ausgegeben = test_input($_POST["Ausgegeben"]);
-
-        //Hier wird ueberprueft ob es die Seriennummer bereits gibt
-//        $result = mysqli_fetch_array(runSQL("SELECT COUNT(*) FROM instrumente WHERE Seriennummer = '$Seriennummer' "), MYSQLI_NUM);
-//        if ($result[0] > 0) return 'Es ist bereits ein Instrument mit der Seriennummer ' . $Seriennummer . ' registriert';
-
-        //Hier wird aus den Formulareingaben die Bezeichung des Instrumentes generiert
-//        $result = mysqli_fetch_assoc(runSQL("SELECT Instrumententyp FROM instrumententypen WHERE ID = '$Instrumententyp' "));
-//        $_POST["Bezeichnung"] =
-//            ($Namenszusatz ? ($Namenszusatz . "-") : "")
-//            . $result["Instrumententyp"] . "
-//        " . ($Stimmung ? (" in " . $Stimmung) : "");
-//
-//        if (!$ausgegeben_am) $ausgegeben_am = date("Y-m-d");
-//
-//        for ($i = 0; $i < $tables_column_names; $i++) {
-//            if (!$ausgegeben && $i == 1) break;
-//            prepare_data_for_sql($tables_column_names[$i], $exclude, $fields, $values);
-//            $insert_data = insert_data_sql($table[$i], $fields, $values);
-//
-//            if ($insert_data["mysql_error"] == "" && $table[$i] == "instrumente") {
-//                $_POST["Instrumenten_ID"] = $insert_data["mysql_insert_id"];
-//            } else if ($insert_data["mysql_error"] == "" && $table[$i] == "musiker") {
-//                $_POST["Musiker_ID"] = $insert_data["mysql_insert_id"];
-//            } else return $insert_data["mysql_error"];
-//        }
-//        return $_POST["Instrumenten_ID"];
     }
 
     public
@@ -218,13 +185,14 @@ class Input
     {
         $instrument_type_ID = "Instrumententyp";
         $ID = 0;
-        $db_instr_types = runSQL("SELECT * FROM instrumententypen");
+//        $db_instr_types = runSQL("SELECT * FROM instrumententypen");
+        $db_instr_types = $this->db->get_all_data('instrumententypen');
         $instr_types_array = array(mysqli_fetch_array($db_instr_types, MYSQLI_NUM));
 
         while ($instr_types_array[] = mysqli_fetch_array($db_instr_types, MYSQLI_NUM)) {
         }
         echo '<h4>Instrumententyp wählen</h4><div id="small_margin">';
-        show_instr_category("register");
+        $this->show_instr_category("register");
         ?>
 
         <select name="<?= $instrument_type_ID ?>" id="<?= $instrument_type_ID ?>">
@@ -252,7 +220,6 @@ class Input
                     }
                 }
             </script>
-
         </select>
         <input type="button" onclick="window.location.href = 'neuen_Instrumententyp_erstellen.php';"
                value="neuen Instrumententyp erstellen"/>
