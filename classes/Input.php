@@ -30,12 +30,6 @@ class Input
 
     public function new_instr_type($category, $new_type): string
     {
-//        global $db_link;
-//        $new_type = mysqli_real_escape_string($db_link, $new_type);
-        //Instrumententyp schon vorhanden
-//        $db_res = runSQL("SELECT COUNT(*) FROM instrumententypen WHERE Instrumententyp = '" . $new_type . "'");
-//        $row = mysqli_fetch_array($db_res);
-
 //        if ($row['COUNT(*)' > 0]) {
         if ($this->db->instr_type_exists($new_type)) {
             return 'Es gibt schon einen Instrumententypen mit dem Namen ' . $new_type;
@@ -48,7 +42,7 @@ class Input
     }
 
 
-    function save_picture($file)
+    function save_picture(&$file)
     {
         $upload_folder = 'Bilder/'; //Das Upload-Verzeichnis
         // $filename = pathinfo($_FILES['datei']['name'], PATHINFO_FILENAME);

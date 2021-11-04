@@ -61,20 +61,26 @@ class Database
         }
 
         $sql = "INSERT INTO `mvhofkirchen." . $table . "` (" . $fields . ") VALUES (" . $values . ")";
-//        echo $sql;
+
         $this->runSQL($sql);
-//        if (mysqli_query($this->db_link, $sql)) {
-//            return array(
-//                "mysql_error" => false,
-//                "mysql_insert_id" => mysqli_insert_id($this->db_link),
-//                "mysql_affected_rows" => mysqli_affected_rows($this->db_link),
-//                "mysql_info" => mysqli_info($this->db_link)
-//            );
-//        } else {
-//            return array("mysql_error" => mysqli_error($this->db_link));
-//        }
     }
 
+    public function update_data($table, array $pos, array &$data)
+    {
+        $values = "";
+
+        foreach ($data as $key => $value) {
+            if ($values == "") {
+                $values = $key . " = '" . $value . "'";
+                continue;
+            }
+            $values = $values . ", " . $key . " = '" . $value . "'";
+        }
+
+//        $sql = "INSERT INTO `mvhofkirchen." . $table . "` (" . $fields . ") VALUES (" . $values . ")";
+        $sql = "UPDATE mvhofkirchen." . $table . " SET " . $values . " WHERE " . key($pos) . " = " . array_values($pos)[0];
+        $this->runSQL($sql);
+    }
 
     public function prepare_data_for_sql($columns, $exclude, &$fields, &$values)
     {
@@ -152,19 +158,12 @@ class Database
 
     function register_file_sql($id, $new_path, $extension, $size)
     {
-        //Hier wird ueberprueft ob es die Seriennummer bereits gibt
-//        $result = mysqli_fetch_array(
-//            runSQL("SELECT COUNT(*) FROM dateiregister WHERE filepath = '$new_path' "),
-//            MYSQLI_NUM
-//        );
-
+        //Check if data already exists
         if ($this->exists('dateiregister', 'filepath', $new_path)) {
             return 'Es ist bereits eine Datei mit dem Namen ' . $new_path . ' registriert';
         }
 
-//        if ($result[0] > 0) {
-//            return 'Es ist bereits eine Datei mit dem Namen ' . $new_path . ' registriert';
-//        }
+        //prepare data for injection
         $data = array(
             'filepath' => $new_path,
             'Instrumenten_ID' => $id,
@@ -172,11 +171,9 @@ class Database
             'Dateityp' => $extension,
             'Dateigroesse' => $size
         );
-        $this->insert_data('dateiregister', $data);
 
-//        $hinzugefuegt_am = date("Y-m-d");
-//        runSQL("INSERT INTO dateiregister ( filepath, Instrumenten_ID, hinzugefuegt_am, Dateityp, Dateigroesse)
-//    VALUES ('" . $new_path . "','" . $id . "','" . $hinzugefuegt_am . "','" . $extension . "','" . $size . "')");
+        //actual insertion
+        $this->insert_data('dateiregister', $data);
     }
 
 
