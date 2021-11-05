@@ -5,6 +5,8 @@
 } */
 
 @import "style_responsive_table2.css";
+@import "greyGridTable.css";
+
 #wrapper {
     max-width: 1000px;
     margin-top: 15px;
@@ -111,3 +113,4 @@ textarea {
 #radio_button {
     max-width: 20px;
 }
+

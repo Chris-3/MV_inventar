@@ -33,16 +33,20 @@ class Output
     function owner_info()
     {
         $sql = $this->db->get_data_from_table_with_ID("leihregister", $this->id);
-        echo '<table><tr>';
-        echo '<th>Name</th><th>ausgegeben am</th><th>zurückgegeben am</th></tr>';
-//        $registry = mysqli_fetch_assoc($this->db->get_data_from_table_with_ID("leihregister", $this->id));
+        echo
+        '<table class="greyGridTable">
+<thead><tr>
+<th>Name</th><th>ausgegeben am</th><th>zurückgegeben am</th>
+</tr></thead><tbody>
+<tr>';
+
         while ($registry = mysqli_fetch_assoc($sql)) {
             $user = mysqli_fetch_assoc($this->db->get_data_from_table_with_ID("musiker", $registry['Musiker_ID']));
             $temp = $registry['zurückgegeben_am'] == '0000-00-00' ? '-' : $registry['zurückgegeben_am'];
-            echo '<th>' . $user['Vorname'] . ' ' . $user['Nachname'] . '</th>
-                    <th>' . $registry['ausgegeben_am'] . '</th><th>' . $temp . '</th></tr>';
+            echo '<td>' . $user['Vorname'] . ' ' . $user['Nachname'] . '</td>
+                    <td>' . $registry['ausgegeben_am'] . '</td><td>' . $temp . '</td></tr>';
         }
-        echo '</table>';
+        echo '</tbody></table>';
     }
 
     public

@@ -168,7 +168,7 @@ class Input
         return $data;
     }
 
-
+    private
     function show_instr_category($var)
     {
         ?>
@@ -180,7 +180,7 @@ class Input
         <?php
     }
 
-
+    private
     function get_instr_type_ID()
     {
         $instrument_type_ID = "Instrumententyp";
@@ -227,6 +227,7 @@ class Input
         <?php
     }
 
+    private
     function generate_years_dropdown($column_name, $min_year)
     {
         ?>
@@ -244,6 +245,7 @@ class Input
         <?php
     }
 
+    private
     function default_input($column_name, $column_comment)
     {
         ?>
@@ -254,6 +256,7 @@ class Input
         <?php
     }
 
+    private
     function generate_date_input($column_name)
     {
         ?>
@@ -264,6 +267,7 @@ class Input
         <?php
     }
 
+    private
     function generate_textfield_input($column_name, $column_comment)
     {
         ?>
@@ -274,6 +278,7 @@ class Input
         <?php
     }
 
+    private
     function generate_yes_no_input($column_name, $question)
     {
         ?>
