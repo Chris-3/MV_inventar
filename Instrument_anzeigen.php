@@ -104,6 +104,12 @@ if (!isset($_GET['Instrumenten_ID'])) {
             <i class="fas fa-dumpster"></i> Instrument Löschen
         </button>
     </p>
+    <p id="button">
+        <button formaction="QR_code.php" type="submit" name="Instrumenten_ID"
+                value="<? $_GET['Instrumenten_ID'] ?>">
+            QR Code generieren
+        </button>
+    </p>
 </form>
 
 <!--<form action="Instrument_loeschen.php" method="GET">-->
