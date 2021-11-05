@@ -31,7 +31,7 @@ class Input
     {
         $old_data = $data = array();
 
-        print_r($_POST);
+//        print_r($_POST);
         //Hier werden die Eingaben des Formulars auf verstecken Code aka einen Hackangriff untersucht
         foreach ($_POST as $key => $value) {
             if ($key == 'submit' || $key == 'register') continue;
@@ -50,6 +50,25 @@ class Input
         }
 
     }
+
+    public function register_user()
+    {
+        $user_data = array(
+            'Vorname' => $_POST['Vorname'],
+            'Nachname' => $_POST['Nachname'],
+        );
+        $user_id = $this->db->insert_data('musiker', $user_data);
+        $rental_data = array(
+            'Instrumenten_ID' => $_POST['Instrumenten_ID'],
+            'Musiker_ID' => $user_id,
+            'ausgegeben_am' => $_POST['ausgegeben_am'],
+            'zurückgegeben_am' => $_POST['zurückgegeben_am']
+        );
+        $this->db->insert_data('leihregister', $rental_data);
+        return $this->id;
+
+    }
+
 
     public
     function instr_info()

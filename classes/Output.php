@@ -67,4 +67,20 @@ class Output
         unlink($filepath);
     }
 
+    public
+    function show_pic(string $path)
+    {
+        if ($path == 'templates/Add-a-photo-01.jpg') {
+            ?>
+            <form action="Bilder_hinzufuegen.php" method="GET">
+            <!--                <p id="button">-->
+            <button type="submit" name="Instrumenten_ID" value="<?= $_GET['Instrumenten_ID'] ?>">
+                <img src=" <?= $path ?> " style="width:250px;height:auto;">
+            </button>
+            <!--                </p>-->
+            </form><?php
+        }else{
+            echo "<img src=\"" . $path . "\" style=\"width:auto;height:200px;\">";
+        }
+    }
 }

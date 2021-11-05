@@ -36,19 +36,7 @@ if (!isset($_GET['Instrumenten_ID'])) {
                     </form>
     </div></th>
     <th>
-        <?php if ($img_path[0] == 'templates/Add-a-photo-01.jpg') {
-            ?>
-            <form action="Bilder_hinzufuegen.php" method="GET">
-                <!--                <p id="button">-->
-                <button type="submit" name="Instrumenten_ID" value="<?= $_GET['Instrumenten_ID'] ?>">
-                    <img src=" <?= $img_path[0] ?> " style="width:250px;height:auto;">
-                </button>
-                <!--                </p>-->
-            </form>
-            <?php
-        } else {
-            echo "<img src=\"" . $img_path[0] . "\" style=\"width:250px;height:auto;\">";
-        }
+        <?php $out->show_pic($img_path[0]);
         ?>
     </th></tr></table>
 
@@ -72,19 +60,7 @@ if (!isset($_GET['Instrumenten_ID'])) {
     <h1>Bildergalerie</h1>
     <?php
     for ($i = 1; $i < count($img_path); $i++) {
-        if ($img_path[$i] == 'templates/Add-a-photo-01.jpg') {
-            ?>
-            <form action="Bilder_hinzufuegen.php" method="GET">
-                <!--                <p id="button">-->
-                <button type="submit" name="Instrumenten_ID" value="<?= $_GET['Instrumenten_ID'] ?>">
-                    <img src=" <?= $img_path[$i] ?> " style="width:250px;height:auto;">
-                </button>
-                <!--                </p>-->
-            </form>
-            <?php
-            break;
-        }
-        echo "<img src=\"" . $img_path[$i] . "\" style=\"width:auto;height:200px;\">";
+        $out->show_pic($img_path[$i]);
     }
 
 } ?>
