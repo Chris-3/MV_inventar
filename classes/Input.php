@@ -4,7 +4,7 @@ require 'Database.php';
 //This class generates input fields and prepares the data for Database input
 class Input
 {
-    private string $id;
+    private int $id;
     private Database $db;
 
     public
@@ -15,7 +15,7 @@ class Input
     }
 
     public static
-    function edit_instr(string $_id)
+    function edit_instr(int $_id)
     {
         return new Input($_id);
     }
@@ -27,14 +27,9 @@ class Input
     }
 
     public
-    function register($tables_column_names)
+    function register_new_instr()
     {
-//        global $_POST;
-
-        $table = array("instrumente", "musiker", "leihregister");
-        $exclude = array("ID");
-        $insert_data = $fields = $values = array();
-        $data = array();
+        $old_data = $data = array();
 
         print_r($_POST);
         //Hier werden die Eingaben des Formulars auf verstecken Code aka einen Hackangriff untersucht
@@ -43,18 +38,15 @@ class Input
             $value = $this->test_input($value);
             $data += [$key => $value];
         }
-        $tmp = $this->db->get_instr_type($data['Instrumententyp']);
-        $v =
-            ($data['Namenszusatz'] ? ($data['Namenszusatz'] . "-") : "")
-            . $tmp . " " . ($data['Stimmung'] ? (" in " . $data['Stimmung']) : "");
-        $data += ['Bezeichnung' => $v];
-        echo '<br>';
-        print_r($data);
+        if ($this->id > -1) {
+            $this->replace_old_data($data);
+        }
 
+        $data += $this->generate_new_description($data);
         if ($this->id == -1) {
             return $this->db->insert_data("instrumente", $data);
         } else {
-            return $this->db->update_data("instrumente", $this->id, $data);
+            return $this->db->update_data("instrumente", ['ID' => $this->id], $data);
         }
 
     }
@@ -62,11 +54,13 @@ class Input
     public
     function instr_info()
     {
+        $data = array();
         $columns = $this->db->get_columnnames("instrumente");
-
-        $this->get_instr_type_ID();
+        if ($this->id > -1) $data = $this->get_old_data();
+        if ($this->id == -1) $this->get_instr_type_ID();
 
         foreach ($columns as list($column_name, $column_comment)) {
+            if ($this->id > -1) $column_comment = array_key_exists($column_name, $data) ? $data[$column_name] : "";
             switch ($column_name) {
                 case "ID":
                 case "Bezeichnung":
@@ -189,6 +183,8 @@ class Input
         $db_instr_types = $this->db->get_all_data('instrumententypen');
         $instr_types_array = array(mysqli_fetch_array($db_instr_types, MYSQLI_NUM));
 
+        if ($this->id > -1) $data = mysqli_fetch_assoc($this->db->get_data_from_table_with_ID("instrumente", $this->id));
+
         while ($instr_types_array[] = mysqli_fetch_array($db_instr_types, MYSQLI_NUM)) {
         }
         echo '<h4>Instrumententyp wählen</h4><div id="small_margin">';
@@ -290,4 +286,35 @@ class Input
         <?php
     }
 
+    private
+    function get_old_data(): array
+    {
+        $arr = mysqli_fetch_assoc($this->db->get_data_from_table_with_ID("instrumente", $this->id));
+        unset($arr['ID']);
+        return $arr;
+    }
+
+    private
+    function generate_new_description(array $data)
+    {
+        $tmp = $this->db->get_instr_type($data['Instrumententyp']);
+        $v =
+            ($data['Namenszusatz'] ? ($data['Namenszusatz'] . "-") : "")
+            . $tmp . " " . ($data['Stimmung'] ? (" in " . $data['Stimmung']) : "");
+        return ['Bezeichnung' => $v];
+
+    }
+
+    private
+    function replace_old_data(&$data)
+    {
+        $old_data = $this->get_old_data();
+        foreach ($data as $key => $value) {
+            if ($value == '') unset($data[$key]);
+        }
+        foreach ($old_data as $key => $value) {
+            if (!array_key_exists($key, $data)) $data += [$key => $value];
+        }
+        unset($data['Bezeichnung']);
+    }
 }

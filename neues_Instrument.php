@@ -16,7 +16,7 @@ $in = Input::new_instr();
 
 if (isset($_POST['submit'])) {
     if (0 && empty($_POST["Seriennummer"]) || empty($_POST["Hersteller"])) {
-//        print_r($_POST);
+
         echo 'Hallo';
         ?>
         <div id="small_margin">
@@ -25,17 +25,13 @@ if (isset($_POST['submit'])) {
         </div>
         <?php
     } else {
-//        echo '<div id="small_margin">';
-//        $erg = register($tables, $_POST);
-        $new_id = $in->register("instrumente");
+        $new_id = $in->register_new_instr();
         ?>
 
         <script>
             var id = <?php echo json_encode($new_id);?>;
-            myFunction();
-
-            function myFunction() {
-                // var tmp = window.location.hostname + "/Instrument_anzeigen.php?Instrumenten_ID=" + id;
+            redirectToShowInstr();
+            function redirectToShowInstr() {
                 var tmp = "/Instrument_anzeigen.php?Instrumenten_ID=" + id;
                 location.replace(tmp);
             }

@@ -59,7 +59,6 @@ require("classes/Database.php");
 
                     </td>
                     <?php
-
                     foreach ($columns as list($column_name, $column_comment)) {
                         if (!in_array($column_name, $exclude)) {
                             if ($row[$column_name] != "") {
@@ -69,9 +68,6 @@ require("classes/Database.php");
                             }
                         }
                         if ($column_name == 'Ausgegeben') break;
-
-                        // if ($column_name == 'Ausgegeben' && $row[$column_name] == 0) break;
-                        //$db_res = runSQL("SELECT * FROM musiker WHERE ID = " . $row[$column_name] . "");
                     }
                     echo '</tr>';
                     } ?>

@@ -1,58 +1,60 @@
 <?php require("templates/header.php");
 require 'classes/Input.php';
-
+//
 //$_POST = [
 //    'submit' => 'Speichern & weiter',
-//    'Seriennummer' => '5555',
-//    'register' => '1',
-//    'Instrumententyp' => '1',
+////    'Seriennummer' => '5555',
+////    'register' => '1',
+////    'Instrumententyp' => '1',
 //    'Stimmung' => 'test',
-//    'Hersteller' => 'test2',
-//    'Namenszusatz' => ''
+////    'Hersteller' => 'test2',
+////    'Namenszusatz' => ''
+//    'Zubehör' => 'ein bissl Zeug',
+//    'Instrumenten_ID' => 12
 //];
+//
 
-
-$in = Input::edit_instr($_GET['Instrumenten_ID']);
-
+//print_r($_GET);
+//echo '<br><br>';
+//print_r($_POST);
+//echo '<br><br>';
 if (isset($_POST['submit'])) {
-    if (0 && empty($_POST["Seriennummer"]) || empty($_POST["Hersteller"])) {
-//        print_r($_POST);
-        echo 'Hallo';
-        ?>
-        <div id="small_margin">\
-            <p> Es müssen zumindest Hersteller und Seriennummer eingetragen sein!</p>
-            <input type="button" onClick="history.go(-1);return true;" value="zurück zur Instrumentenregistrierung"/>
-        </div>
-        <?php
-    } else {
-//        echo '<div id="small_margin">';
-//        $erg = register($tables, $_POST);
-        $new_id = $in->register("instrumente");
-        ?>
+    $in = Input::edit_instr($_POST['Instrumenten_ID']);
+    unset($_POST['Instrumenten_ID']);
+    print_r($_POST);
+    $new_id = $in->register_new_instr();
+    ?>
+    <!--    <input id="clickMe" type="button" value="clickme" onclick="myFunction();" />-->
+    <script>
+        var id = <?php echo json_encode($new_id);?>;
+        redirectToShowInstr();
 
-        <script>
-            var id = <?php echo json_encode($new_id);?>;
-            myFunction();
+        function redirectToShowInstr() {
+            // var tmp = window.location.hostname + "/Instrument_anzeigen.php?Instrumenten_ID=" + id;
+            var tmp = "/Instrument_anzeigen.php?Instrumenten_ID=" + id;
+            location.replace(tmp);
+            // document.write(tmp);
 
-            function myFunction() {
-                // var tmp = window.location.hostname + "/Instrument_anzeigen.php?Instrumenten_ID=" + id;
-                var tmp = "/Instrument_anzeigen.php?Instrumenten_ID=" + id;
-                location.replace(tmp);
-            }
-        </script>
-        <?php
-    }
+        }
+    </script>
+    <?php
+//    }
 } else {
+    $id = htmlspecialchars($_GET['Instrumenten_ID']);
+    $in = Input::edit_instr($id);
     ?>
     <div id="small_margin">
-        <p> In diesem Schritt werden die Daten des Instruments und des Musikers bzw. der Musikerin aufgenommen. Im
-            nächsten Schritt können Bilder des Geräts hochgeladen werden.</p>
+        <p> Hier können die Instrumentendaten bearbeitet werden.</p>
     </div>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
         <?php
         $in->instr_info();
         ?>
-        <p id="button"><input type="submit" name="submit" value="Speichern & weiter"/></p>
+        <input type="hidden" name="Instrumenten_ID" value="<?= $id ?>">
+        <p id="button">
+            <input type="submit" name="submit" value="Speichern & weiter"/>
+        </p>
     </form>
+
 <?php }
 require("templates/footer.php");

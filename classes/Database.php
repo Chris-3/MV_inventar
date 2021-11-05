@@ -79,7 +79,7 @@ class Database
 //        $sql = "INSERT INTO `mvhofkirchen." . $table . "` (" . $fields . ") VALUES (" . $values . ")";
         $sql = "UPDATE mvhofkirchen." . $table . " SET " . $values . " WHERE " . key($pos) . " = " . array_values($pos)[0];
         $this->runSQL($sql);
-        return mysqli_insert_id($this->db_link);
+        return array_values($pos)[0];
     }
 
     public function prepare_data_for_sql($columns, $exclude, &$fields, &$values)

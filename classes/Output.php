@@ -11,7 +11,7 @@ class Output
     public
     function __construct($_id)
     {
-        $this->exclude = array('ID', 'Stimmung', 'Namenszusatz', 'Instrumententyp', 'Musiker_ID', 'Instrumenten_ID', 'Ausgegeben');
+        $this->exclude = array('Stimmung', 'Namenszusatz', 'Instrumententyp', 'Musiker_ID', 'Instrumenten_ID', 'Ausgegeben');
         $this->id = $_id;
         $this->db = new Database();
     }
