@@ -103,7 +103,30 @@ class Input
     public
     function owner_info()
     {
+        $data = array();
+        $user_data = $this->db->get_columnnames("musiker");
+        $rental_data = $this->db->get_columnnames("leihregister");
+        if ($this->id > -1) $data = $this->get_old_data();
+        if ($this->id == -1) $this->get_instr_type_ID();
 
+        foreach ([$user_data, $rental_data] as list($column_name, $column_comment)) {
+            if ($this->id > -1) $column_comment = array_key_exists($column_name, $data) ? $data[$column_name] : "";
+            switch ($column_name) {
+                case "ID":
+                case "Ausgegeben":
+                    break;
+                case "ausgegeben_am":
+                case"zurückgegeben_am":
+                    $this->generate_date_input($column_name);
+                case "Zubehör":
+                case "Anmerkung":
+                    $this->generate_textfield_input($column_name, $column_comment);
+                    break;
+                default:
+                    $this->default_input($column_name, $column_comment);
+                    break;
+            }
+        }
     }
 
     public

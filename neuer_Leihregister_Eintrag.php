@@ -43,7 +43,7 @@ if (isset($_POST['submit'])) {
     </div>
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST">
         <?php
-        $in->instr_info();
+        $in->owner_info();
         ?>
         <input type="hidden" name="Instrumenten_ID" value="<?= $id ?>">
         <p id="button">
