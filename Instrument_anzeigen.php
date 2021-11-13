@@ -70,19 +70,19 @@ if (!isset($_GET['Instrumenten_ID'])) {
 <form method="GET">
     <p id="button">
         <button formaction="Bilder_hinzufuegen.php" type="submit" name="Instrumenten_ID"
-                value="<? $_GET['Instrumenten_ID'] ?>">
+                value="<?= $_GET['Instrumenten_ID'] ?>">
             Bild hinzufügen
         </button>
     </p>
     <p id="button">
         <button formaction="Instrument_loeschen.php" type="submit" name="Instrumenten_ID"
-                value="<? $_GET['Instrumenten_ID'] ?>">
+                value="<?= $_GET['Instrumenten_ID'] ?>">
             <i class="fas fa-dumpster"></i> Instrument Löschen
         </button>
     </p>
     <p id="button">
-        <button formaction="QR_code.php" type="submit" name="Instrumenten_ID"
-                value="<? $_GET['Instrumenten_ID'] ?>">
+        <button formaction="qrcode/QR_code.html" type="submit" name="Instrumenten_ID"
+                value="<?= $_GET['Instrumenten_ID']?>>">
             QR Code generieren
         </button>
     </p>
