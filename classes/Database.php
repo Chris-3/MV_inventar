@@ -2,10 +2,10 @@
 
 class Database
 {
-    private string $host = 'localhost';
-    private string $user = 'mvhofkirchen';
-    private string $pw = 'y+u<YgTXXu4H';
-    private string $db_name = 'mvhofkirchen';
+    private $host = 'localhost';
+    private $user = 'mvhofkirchen';
+    private $pw = 'y+u<YgTXXu4H';
+    private $db_name = 'mvhofkirchen';
     private $db_link;
 
     public function __construct()

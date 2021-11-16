@@ -4,8 +4,8 @@ require 'Database.php';
 //This class generates input fields and prepares the data for Database input
 class Input
 {
-    private int $id;
-    private Database $db;
+    private $id;
+    private $db;
 
     public
     function __construct($_id)

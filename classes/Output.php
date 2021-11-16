@@ -2,10 +2,10 @@
 
 class Output
 {
-    private string $id;
-    private Database $db;
+    private $id;
+    private $db;
 
-    private array $exclude;
+    private $exclude;
 
 
     public
