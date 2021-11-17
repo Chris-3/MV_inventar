@@ -59,7 +59,7 @@ class Input
         );
         $user_id = $this->db->insert_data('musiker', $user_data);
         $rental_data = array(
-            'Instrumenten_ID' => $_POST['Instrumenten_ID'],
+            'Instrumenten_ID' => $this->id,
             'Musiker_ID' => $user_id,
             'ausgegeben_am' => $_POST['ausgegeben_am'],
             'zurückgegeben_am' => $_POST['zurückgegeben_am']
@@ -80,23 +80,7 @@ class Input
 
         foreach ($columns as list($column_name, $column_comment)) {
             if ($this->id > -1) $column_comment = array_key_exists($column_name, $data) ? $data[$column_name] : "";
-            switch ($column_name) {
-                case "ID":
-                case "Bezeichnung":
-                case "Instrumententyp":
-                case "Ausgegeben":
-                    break;
-                case "Baujahr":
-                    $this->generate_years_dropdown($column_name, 1950);
-                    break;
-                case "Zubehör":
-                case "Anmerkung":
-                    $this->generate_textfield_input($column_name, $column_comment);
-                    break;
-                default:
-                    $this->default_input($column_name, $column_comment);
-                    break;
-            }
+            $this->generate_input_field($column_name, $column_comment);
         }
     }
 
@@ -109,23 +93,42 @@ class Input
         if ($this->id > -1) $data = $this->get_old_data();
         if ($this->id == -1) $this->get_instr_type_ID();
 
-        foreach ([$user_data, $rental_data] as list($column_name, $column_comment)) {
+        foreach ($user_data as list($column_name, $column_comment)) {
             if ($this->id > -1) $column_comment = array_key_exists($column_name, $data) ? $data[$column_name] : "";
-            switch ($column_name) {
-                case "ID":
-                case "Ausgegeben":
-                    break;
-                case "ausgegeben_am":
-                case"zurückgegeben_am":
-                    $this->generate_date_input($column_name);
-                case "Zubehör":
-                case "Anmerkung":
-                    $this->generate_textfield_input($column_name, $column_comment);
-                    break;
-                default:
-                    $this->default_input($column_name, $column_comment);
-                    break;
-            }
+            $this->generate_input_field($column_name, $column_comment);
+        }
+
+        foreach ($rental_data as list($column_name, $column_comment)) {
+            if ($this->id > -1) $column_comment = array_key_exists($column_name, $data) ? $data[$column_name] : "";
+            $this->generate_input_field($column_name, $column_comment);
+        }
+    }
+
+    private
+    function generate_input_field($description, $defaultValue)
+    {
+        switch ($description) {
+            case "ID":
+            case "Bezeichnung":
+            case "Instrumententyp":
+            case "Ausgegeben":
+            case "Instrumenten_ID":
+            case "Musiker_ID":
+                break;
+            case "Baujahr":
+                $this->generate_years_dropdown($description, 1950);
+                break;
+            case "ausgegeben_am":
+            case "zurückgegeben_am":
+                $this->generate_date_input($description);
+                break;
+            case "Zubehör":
+            case "Anmerkung":
+                $this->generate_textfield_input($description, $defaultValue);
+                break;
+            default:
+                $this->default_input($description, $defaultValue);
+                break;
         }
     }
 
@@ -297,10 +300,10 @@ class Input
     private
     function generate_date_input($column_name)
     {
-        ?>
-        <div id="data_input">
-            <label for="<?= $column_name ?>">Wann wurde das Instrument ausgegeben? </label>
-            <input id="years_dropdown" type="date" name="<?= $column_name ?>">
+        echo '<div id="data_input">';
+        if ($column_name == 'ausgegeben_am') echo '<label for="<?= $column_name ?>">Wann wurde das Instrument ausgegeben? </label>';
+        else echo '<label for="<?= $column_name ?>">Wann wurde das Instrument zurückgegeben? </label>';
+        ?><input id="years_dropdown" type="date" name="<?= $column_name ?>">
         </div>
         <?php
     }

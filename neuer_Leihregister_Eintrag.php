@@ -4,15 +4,7 @@ require 'classes/Input.php';
 
 ?><h1>Work in Progress</h1>
 <?php
-//$_POST = [
-//    'submit' => 'Speichern & weiter',
-//    'Seriennummer' => '5555',
-//    'register' => '1',
-//    'Instrumententyp' => '1',
-//    'Stimmung' => 'test',
-//    'Hersteller' => 'test2',
-//    'Namenszusatz' => ''
-//];
+
 if (isset($_POST['submit'])) {
     $in = Input::edit_instr($_POST['Instrumenten_ID']);
     unset($_POST['Instrumenten_ID']);

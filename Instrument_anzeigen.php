@@ -3,7 +3,7 @@
 
 require 'classes/Output.php';
 require 'classes/Database.php';
-include 'classes/phpqrcode/qrlib.php';
+//include 'classes/phpqrcode/qrlib.php';
 
 global $_GET;
 //$_GET['Instrumenten_ID'] = 3;
