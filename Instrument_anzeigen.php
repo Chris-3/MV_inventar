@@ -2,7 +2,7 @@
 //require("templates/add_new_instrument.php");
 
 require 'classes/Output.php';
-require 'classes/Database.php';
+//require 'classes/Database.php';
 //include 'classes/phpqrcode/qrlib.php';
 
 global $_GET;
@@ -15,30 +15,29 @@ if (!isset($_GET['Instrumenten_ID'])) {
     </div>
     <?php
 } else {
-    ?>
-    <div id="small_margin">
+?>
+<div id="small_margin">
 
-        <?php
-        $id = $_GET['Instrumenten_ID'];
-        $out = new Output($id);
-        $img_path = $out->pictures(); ?>
+    <?php
+    $id = $_GET['Instrumenten_ID'];
+    $out = new Output($id);
+    $img_path = $out->pictures(); ?>
 
-        <h1>Instrumenten Daten</h1>
-        <table>
-            <tr>
-                <th>
-                    <?= $out->instr_info(); ?>
-                    <form method="get">
-                        <button formaction="Instrument_bearbeiten.php" type="submit" name="Instrumenten_ID"
-                                value="<?= $_GET['Instrumenten_ID'] ?>">
-                            <i class="fas fa-pen"></i> Daten bearbeiten
-                        </button>
-                    </form>
-    </div></th>
-    <th>
-        <?php $out->show_pic($img_path[0]);
-        ?>
-    </th></tr></table>
+    <h1>Instrumenten Daten</h1>
+    <article>
+        <section class="single">
+            <?= $out->instr_info(); ?>
+            <form method="get">
+                <button formaction="Instrument_bearbeiten.php" type="submit" name="Instrumenten_ID"
+                        value="<?= $_GET['Instrumenten_ID'] ?>">
+                    <i class="fas fa-pen"></i> Daten bearbeiten
+                </button>
+            </form>
+        </section>
+        <section class="single">
+            <?php $out->show_pic($img_path[0]); ?>
+        </section>
+    </article>
 
     <h1>Leihregister</h1>
     <div id="owner - info">
@@ -63,7 +62,7 @@ if (!isset($_GET['Instrumenten_ID'])) {
         $out->show_pic($img_path[$i]);
     }
 
-} ?>
+    } ?>
 
 </div>
 
@@ -82,7 +81,7 @@ if (!isset($_GET['Instrumenten_ID'])) {
     </p>
     <p id="button">
         <button formaction="qrcode/QR_code.html" type="submit" name="Instrumenten_ID"
-                value="<?= $_GET['Instrumenten_ID']?>>">
+                value="<?= $_GET['Instrumenten_ID'] ?>>">
             QR Code generieren
         </button>
     </p>

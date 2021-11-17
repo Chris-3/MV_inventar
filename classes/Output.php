@@ -1,10 +1,10 @@
 <?php
+require 'Database.php';
 
 class Output
 {
     private $id;
     private $db;
-
     private $exclude;
 
 
@@ -20,25 +20,29 @@ class Output
     function instr_info()
     {
         $data = mysqli_fetch_assoc($this->db->get_data_from_table_with_ID("instrumente", $this->id));
-//        print_r($data);
-        echo '<table><tr>';
+        echo '<table class="greyGridTable"><tbody>';
         foreach ($data as $key => $value) {
             if (in_array($key, $this->exclude)) continue;
-            echo '<th>' . $key . '</th><th>' . $value . '</th></tr>';
+            echo '<tr><td>' . $key . '</td><td>' . $value . '</td></tr>';
         }
-        echo '</table>';
+        echo '</tbody></table>';
     }
 
     public
     function owner_info()
     {
         $sql = $this->db->get_data_from_table_with_ID("leihregister", $this->id);
-        echo
-        '<table class="greyGridTable">
-<thead><tr>
-<th>Name</th><th>ausgegeben am</th><th>zurückgegeben am</th>
-</tr></thead><tbody>
-<tr>';
+        ?>
+        <table class="greyGridTable">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>ausgegeben am</th>
+            <th>zurückgegeben am</th>
+        </tr>
+        </thead><tbody>
+        <tr>
+        <?php
 
         while ($registry = mysqli_fetch_assoc($sql)) {
             $user = mysqli_fetch_assoc($this->db->get_data_from_table_with_ID("musiker", $registry['Musiker_ID']));
@@ -73,14 +77,32 @@ class Output
         if ($path == 'templates/Add-a-photo-01.jpg') {
             ?>
             <form action="Bilder_hinzufuegen.php" method="GET">
-            <!--                <p id="button">-->
-            <button type="submit" name="Instrumenten_ID" value="<?= $_GET['Instrumenten_ID'] ?>">
+            <button type="submit" name="Instrumenten_ID" value="<?= $this->id ?>">
                 <img src=" <?= $path ?> " style="width:250px;height:auto;">
             </button>
-            <!--                </p>-->
             </form><?php
-        }else{
+        } else {
             echo "<img src=\"" . $path . "\" style=\"width:auto;height:200px;\">";
         }
+    }
+
+    public
+    function next()
+    {
+        $this->id = $this->db->next_id($this->id);
+        return $this->id;
+    }
+
+    public
+    function previous()
+    {
+        $this->id = $this->db->previous_id($this->id);
+        return $this->id;
+    }
+
+    public
+    function get_id()
+    {
+        return $this->id;
     }
 }

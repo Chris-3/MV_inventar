@@ -1,84 +1,36 @@
 <?php
 require("templates/header.php");
-require("classes/Database.php");
+//require("classes/Database.php");
+
+require "classes/Output.php";
 ?>
-    <div id="content">
-        <h1>Willkommen</h1>
-        <p>...zum ersten Instrumenten Inventar test</p>
+<div id="content">
+    <h1>Willkommen</h1>
+    <p>...zum ersten Instrumenten Inventar</p>
 
-        <h1>Instrumentenliste</h1>
-        <p>Hier ist eine Liste aller registrierten Instrumente:</p>
-        haha
-        <?php
-        $tables = array("instrumente", "musiker", "leihregister");
-        //$db_res = runSQL("SELECT * FROM " . implode(", ", $tables) . "");
-        //$exclude = array("ID", "Musiker_ID", "Instrumenten_ID", "Instrumententyp", "Stimmung", "Namenszusatz","ausgegeben_am", "zurückgegeben_am");
-        $exclude = array("");
-        $columns = array();
-        $db = new Database();
+    <h1>Instrumentenliste</h1>
+    <p>Hier ist eine Liste aller registrierten Instrumente:</p>
 
-        foreach ($tables as $table) {
-            $columns = array_merge($columns, $db->get_columnnames($table));
-        }
-        ?>
-        <h1>Liste aller Instrumente</h1>
+    <h1>Liste aller Instrumente</h1>
+    <article>
         <form action="Instrument_anzeigen.php" method="GET">
+            <?php
+            $out = new Output(-1);
 
-            <table class="rwd-table">
-                <tr><?php
-                    echo('<th> </th>');
-                    foreach ($columns as list($column_name, $column_comment)) {
-                        if (!in_array($column_name, $exclude)) {
-                            echo('<th>' . $column_name . ' </th>');
-                        }
-                    }
-                    ?>
-                </tr>
-                <?php
-                $db_res = $db->get_all_data("instrumente");
-
-                while ($row = mysqli_fetch_assoc($db_res)) {
+            while ($out->next() != -1) {
                 ?>
-                <tr>
-                    <td>
-                        <!-- Button for viewing instrument -->
-                        <button type="submit" name="Instrumenten_ID" value="<?= $row["ID"] ?>">
-                            <i class="fas fa-eye"></i></button>
-                        <!-- Button for changing instr info -->
-                        <button formaction="Instrument_bearbeiten.php" type="submit" name="Instrumenten_ID"
-                                value="<?= $row["ID"] ?>">
-                            <i class="fas fa-pen"></i></button>
-                        <!-- Button for adding new Pictures -->
-                        <button formaction="Bilder_hinzufuegen.php" type="submit" name="Instrumenten_ID"
-                                value="<?= $row["ID"] ?>">
-                            <i class="fas fa-camera"></i></button>
-                        <!-- Button for deleting entry -->
-                        <button formaction="Instrument_loeschen.php" type="submit" name="Instrumenten_ID"
-                                value="<?= $row["ID"] ?>">
-                            <i class="fas fa-dumpster"></i></button>
+                <section class="listAll">
+                    <button class="listAll" type="submit" name="Instrumenten_ID" value="<?= $out->get_id() ?>">
+                        <div style="height: 200px">
+                            <img src=" <?= $out->pictures()[0] ?> " style="max-width:100%;max-height:200px;">
+                        </div>
+                        <?php $out->instr_info(); ?>
+                    </button>
+                </section>
 
-                    </td>
-                    <?php
-                    foreach ($columns as list($column_name, $column_comment)) {
-                        if (!in_array($column_name, $exclude)) {
-                            if ($row[$column_name] != "") {
-                                echo('<td data-th="' . $column_name . '">' . $row[$column_name] . '</th>');
-                            } else {
-                                echo('<td data-th="' . $column_name . '"> </th>');
-                            }
-                        }
-                        if ($column_name == 'Ausgegeben') break;
-                    }
-                    echo '</tr>';
-                    } ?>
-
-            </table>
+            <?php } ?>
         </form>
+    </article>
 
-
-        <p>&larr; Drag window (in editor or full page view) to see the effect. &rarr;</p>
-        <p><?= print_r($_GET); ?></p>
-
-
-    </div>
+</div>
 <?php require("templates/footer.php"); ?>

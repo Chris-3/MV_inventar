@@ -161,6 +161,7 @@ class Database
         return ($this->exists('musiker', 'Instrumententyp', $firstName)) && ($this->exists('musiker', 'Instrumententyp', $lastName));
     }
 
+    public
     function register_file_sql($id, $new_path, $extension, $size)
     {
         //Check if data already exists
@@ -181,5 +182,33 @@ class Database
         $this->insert_data('dateiregister', $data);
     }
 
+    public
+    function next_id(int $id): int
+    {
+        if ($id == -1) {
+            return mysqli_fetch_assoc($this->runSQL('SELECT MIN(id) FROM mvhofkirchen.instrumente'))['MIN(id)'];
+        }
+        $sql = "SELECT ID FROM mvhofkirchen.instrumente WHERE id > " . $id . " ORDER BY id LIMIT 1";
+        $data = $this->runSQL($sql);
+        $res = mysqli_fetch_assoc($data);
+
+        if (isset($res['ID'])) return $res['ID'];
+        return -1;
+    }
+
+    public
+    function previous_id(int $id)
+    {
+        if ($id == -1) {
+            $res = mysqli_fetch_assoc($this->runSQL('SELECT MAX(id) FROM mvhofkirchen.instrumente'));
+            return $res['ID'];
+        }
+        $sql = "SELECT ID FROM mvhofkirchen.instrumente WHERE id < " . $id . " ORDER BY id DESC LIMIT 1";
+        $data = $this->runSQL($sql);
+        $res = mysqli_fetch_assoc($data);
+
+        if (isset($res['ID'])) return $res['ID'];
+        return -1;
+    }
 
 }

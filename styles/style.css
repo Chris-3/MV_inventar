@@ -3,12 +3,38 @@
     background-color: bisque;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 } */
-
+@import "reset.css";
 @import "style_responsive_table2.css";
 @import "greyGridTable.css";
 
+
+body {
+    padding: 0;
+    font-family: Montserrat, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    color: #444;
+    background: #eee;
+}
+
+@media screen and (min-width: 900px) {
+    body {
+        padding: 0 2em;
+    }
+}
+
+h1 {
+    font-weight: normal;
+    letter-spacing: -1px;
+    color: #34495E;
+}
+
+h4 {
+    clear: both;
+}
+
 #wrapper {
-    max-width: 1000px;
+    /*max-width: 1000px;*/
     margin-top: 15px;
     margin-left: auto;
     margin-right: auto;
@@ -64,12 +90,9 @@ nav li {
     overflow-x: auto;
 }
 
-h4 {
-    clear: both;
-}
 
 form {
-    padding: 10px;
+    padding: 0px;
 }
 
 form p {
@@ -114,3 +137,35 @@ textarea {
     max-width: 20px;
 }
 
+article {
+    /*background-color: yellow;*/
+    list-style-type: none;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+section.listAll {
+    display: inline-block;
+    font-size: 20px;
+    padding: 5px 0px;
+    width: 250px;
+    /*width: 33%;*/
+    height: 400px;
+    vertical-align: middle;
+}
+
+button.listAll {
+    /*padding: 10px 10px;*/
+    width: 100%;
+    height: 100%;
+}
+
+section.single {
+    display: inline-block;
+    font-size: 20px;
+    padding: 10px;
+    min-width: 250px;
+    width: 45%;
+
+}
