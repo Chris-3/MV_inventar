@@ -17,12 +17,12 @@ class Output
     }
 
     public
-    function instr_info()
+    function instr_info(array $excl = [''])
     {
         $data = mysqli_fetch_assoc($this->db->get_data_from_table_with_ID("instrumente", $this->id));
         echo '<table class="greyGridTable"><tbody>';
         foreach ($data as $key => $value) {
-            if (in_array($key, $this->exclude)) continue;
+            if (in_array($key, $this->exclude) || in_array($key, $excl)) continue;
             echo '<tr><td>' . $key . '</td><td>' . $value . '</td></tr>';
         }
         echo '</tbody></table>';
@@ -61,7 +61,7 @@ class Output
         while ($picture = mysqli_fetch_assoc($db_res)) {
             array_push($path_arr, $picture['filepath']);
         }
-        array_push($path_arr, 'templates/Add-a-photo-01.jpg');
+        array_push($path_arr, 'templates/add-a-photo.png');
         return $path_arr;
     }
 
@@ -74,7 +74,7 @@ class Output
     public
     function show_pic(string $path)
     {
-        if ($path == 'templates/Add-a-photo-01.jpg') {
+        if ($path == 'templates/add-a-photo.png') {
             ?>
             <form action="Bilder_hinzufuegen.php" method="GET">
             <button type="submit" name="Instrumenten_ID" value="<?= $this->id ?>">
@@ -82,7 +82,7 @@ class Output
             </button>
             </form><?php
         } else {
-            echo "<img src=\"" . $path . "\" style=\"width:auto;height:200px;\">";
+            echo "<img src=\"" . $path . " \" style=\"width:auto;height:200px;\">";
         }
     }
 
@@ -104,5 +104,12 @@ class Output
     function get_id()
     {
         return $this->id;
+    }
+
+    public
+    function instr_name()
+    {
+        $data = mysqli_fetch_assoc($this->db->get_data_from_table_with_ID("instrumente", $this->id));
+        return $data['Bezeichnung'];
     }
 }

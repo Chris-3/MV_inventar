@@ -8,8 +8,8 @@ require "classes/Output.php";
     <h1>Willkommen</h1>
     <p>...zum ersten Instrumenten Inventar</p>
 
-    <h1>Instrumentenliste</h1>
-    <p>Hier ist eine Liste aller registrierten Instrumente:</p>
+    <!--    <h1>Instrumentenliste</h1>-->
+    <!--    <p>Hier ist eine Liste aller registrierten Instrumente:</p>-->
 
     <h1>Liste aller Instrumente</h1>
     <article>
@@ -21,10 +21,17 @@ require "classes/Output.php";
                 ?>
                 <section class="listAll">
                     <button class="listAll" type="submit" name="Instrumenten_ID" value="<?= $out->get_id() ?>">
-                        <div style="height: 200px">
-                            <img src=" <?= $out->pictures()[0] ?> " style="max-width:100%;max-height:200px;">
+
+                        <div class="container" style="height: 200px">
+                            <img src=" <?= $out->pictures()[0] ?> "
+                                 style="max-width:95%;max-height: 95%;">
                         </div>
-                        <?php $out->instr_info(); ?>
+                        <div style="height: 200px">
+                            <h2><?= $out->instr_name() ?></h2>
+                            <?php $out->instr_info(['ID', 'Hersteller', 'Anmerkung', 'Zubehör', 'Bezeichnung']); ?>
+
+                        </div>
+
                     </button>
                 </section>
 
